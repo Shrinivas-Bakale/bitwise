@@ -17,7 +17,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 
-const MEDIA_API = "http://localhost:8080/api/v1/media";
+const MEDIA_API = "http://localhost:5000/api/v1/media";
 
 const LectureTab = () => {
   const [lectureTitle, setLectureTitle] = useState("");
@@ -29,20 +29,20 @@ const LectureTab = () => {
   const params = useParams();
   const { courseId, lectureId } = params;
 
-  const {data:lectureData} = useGetLectureByIdQuery(lectureId);
+  const { data: lectureData } = useGetLectureByIdQuery(lectureId);
   const lecture = lectureData?.lecture;
 
-  useEffect(()=>{
-    if(lecture){
+  useEffect(() => {
+    if (lecture) {
       setLectureTitle(lecture.lectureTitle);
       setIsFree(lecture.isPreviewFree);
       setUploadVideoInfo(lecture.videoInfo)
     }
-  },[lecture])
+  }, [lecture])
 
   const [edtiLecture, { data, isLoading, error, isSuccess }] =
     useEditLectureMutation();
-    const [removeLecture,{data:removeData, isLoading:removeLoading, isSuccess:removeSuccess}] = useRemoveLectureMutation();
+  const [removeLecture, { data: removeData, isLoading: removeLoading, isSuccess: removeSuccess }] = useRemoveLectureMutation();
 
   const fileChangeHandler = async (e) => {
     const file = e.target.files[0];
@@ -80,8 +80,8 @@ const LectureTab = () => {
 
     await edtiLecture({
       lectureTitle,
-      videoInfo:uploadVideInfo,
-      isPreviewFree:isFree,
+      videoInfo: uploadVideInfo,
+      isPreviewFree: isFree,
       courseId,
       lectureId,
     });
@@ -100,11 +100,11 @@ const LectureTab = () => {
     }
   }, [isSuccess, error]);
 
-  useEffect(()=>{
-    if(removeSuccess){
+  useEffect(() => {
+    if (removeSuccess) {
       toast.success(removeData.message);
     }
-  },[removeSuccess])
+  }, [removeSuccess])
 
   return (
     <Card>
@@ -119,8 +119,8 @@ const LectureTab = () => {
           <Button disbaled={removeLoading} variant="destructive" onClick={removeLectureHandler}>
             {
               removeLoading ? <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
-              Please wait
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
               </> : "Remove Lecture"
             }
           </Button>
@@ -162,13 +162,13 @@ const LectureTab = () => {
 
         <div className="mt-4">
           <Button disabled={isLoading} onClick={editLectureHandler}>
-              {
-                isLoading ? <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin"/>
+            {
+              isLoading ? <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Please wait
-                </> : "Update Lecture"
-              }
-            
+              </> : "Update Lecture"
+            }
+
           </Button>
         </div>
       </CardContent>

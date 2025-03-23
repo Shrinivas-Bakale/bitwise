@@ -24,12 +24,12 @@ import {
   usePublishCourseMutation,
 } from "@/features/api/courseApi";
 import { Loader2 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 const CourseTab = () => {
-  
+
   const [input, setInput] = useState({
     courseTitle: "",
     subTitle: "",
@@ -42,14 +42,14 @@ const CourseTab = () => {
 
   const params = useParams();
   const courseId = params.courseId;
-  const { data: courseByIdData, isLoading: courseByIdLoading , refetch} =
+  const { data: courseByIdData, isLoading: courseByIdLoading, refetch } =
     useGetCourseByIdQuery(courseId);
 
-    const [publishCourse, {}] = usePublishCourseMutation();
- 
+  const [publishCourse] = usePublishCourseMutation();
+
   useEffect(() => {
-    if (courseByIdData?.course) { 
-        const course = courseByIdData?.course;
+    if (courseByIdData?.course) {
+      const course = courseByIdData?.course;
       setInput({
         courseTitle: course.courseTitle,
         subTitle: course.subTitle,
@@ -105,12 +105,12 @@ const CourseTab = () => {
 
   const publishStatusHandler = async (action) => {
     try {
-      const response = await publishCourse({courseId, query:action});
-      if(response.data){
+      const response = await publishCourse({ courseId, query: action });
+      if (response.data) {
         refetch();
         toast.success(response.data.message);
       }
-    } catch (error) {
+    } catch {
       toast.error("Failed to publish or unpublish course");
     }
   }
@@ -124,20 +124,24 @@ const CourseTab = () => {
     }
   }, [isSuccess, error]);
 
-  if(courseByIdLoading) return <h1>Loading...</h1>
- 
+  if (courseByIdLoading) return <h1>Loading...</h1>
+
   return (
     <Card>
       <CardHeader className="flex flex-row justify-between">
         <div>
           <CardTitle>Basic Course Information</CardTitle>
           <CardDescription>
-            Make changes to your courses here. Click save when you're done.
+            Make changes to your courses here. Click save when you&apos;re done.
           </CardDescription>
         </div>
         <div className="space-x-2">
-          <Button disabled={courseByIdData?.course.lectures.length === 0} variant="outline" onClick={()=> publishStatusHandler(courseByIdData?.course.isPublished ? "false" : "true")}>
-            {courseByIdData?.course.isPublished ? "Unpublished" : "Publish"}
+          <Button
+            disabled={!courseByIdData?.course?.lectures || courseByIdData?.course?.lectures?.length === 0}
+            variant="outline"
+            onClick={() => publishStatusHandler(courseByIdData?.course.isPublished ? "false" : "true")}
+          >
+            {courseByIdData?.course.isPublished ? "Unpublish" : "Publish"}
           </Button>
           <Button>Remove Course</Button>
         </div>

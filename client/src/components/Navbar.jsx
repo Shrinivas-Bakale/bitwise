@@ -50,7 +50,7 @@ const Navbar = () => {
           <School size={"30"} />
           <Link to="/">
             <h1 className="hidden md:block font-extrabold text-2xl">
-              E-Learning
+              Bitwise
             </h1>
           </Link>
         </div>
@@ -104,7 +104,7 @@ const Navbar = () => {
       {/* Mobile device  */}
       <div className="flex md:hidden items-center justify-between px-4 h-full">
         <h1 className="font-extrabold text-2xl">E-learning</h1>
-        <MobileNavbar user={user}/>
+        <MobileNavbar user={user} />
       </div>
     </div>
   );
@@ -112,9 +112,9 @@ const Navbar = () => {
 
 export default Navbar;
 
-const MobileNavbar = ({user}) => {
+const MobileNavbar = ({ user }) => {
   const navigate = useNavigate();
-  
+
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -140,7 +140,7 @@ const MobileNavbar = ({user}) => {
         {user?.role === "instructor" && (
           <SheetFooter>
             <SheetClose asChild>
-              <Button type="submit" onClick={()=> navigate("/admin/dashboard")}>Dashboard</Button>
+              <Button type="submit" onClick={() => navigate("/admin/dashboard")}>Dashboard</Button>
             </SheetClose>
           </SheetFooter>
         )}

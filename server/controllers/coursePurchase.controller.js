@@ -14,6 +14,15 @@ export const createCheckoutSession = async (req, res) => {
     const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found!" });
 
+    // Check if the price meets Stripe's minimum requirement (50 cents equivalent)
+    if (course.coursePrice < 50) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Course price must be at least ₹50 to process payment with Stripe",
+      });
+    }
+
     // Create a new course purchase record
     const newPurchase = new CoursePurchase({
       courseId,

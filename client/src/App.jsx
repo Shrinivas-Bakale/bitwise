@@ -23,6 +23,7 @@ import {
 } from "./components/ProtectedRoutes";
 import PurchaseCourseProtectedRoute from "./components/PurchaseCourseProtectedRoute";
 import { ThemeProvider } from "./components/ThemeProvider";
+import VoiceLetterGame from "./pages/VoiceLetterGame";
 
 const appRouter = createBrowserRouter([
   {
@@ -83,8 +84,16 @@ const appRouter = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <PurchaseCourseProtectedRoute>
-            <CourseProgress />
+              <CourseProgress />
             </PurchaseCourseProtectedRoute>
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "voice-letter-game",
+        element: (
+          <ProtectedRoute>
+            <VoiceLetterGame />
           </ProtectedRoute>
         ),
       },
@@ -132,7 +141,7 @@ function App() {
   return (
     <main>
       <ThemeProvider>
-      <RouterProvider router={appRouter} />
+        <RouterProvider router={appRouter} />
       </ThemeProvider>
     </main>
   );
