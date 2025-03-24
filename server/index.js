@@ -21,9 +21,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cookieParser());
 
+// CORS middleware with flexible origin configuration
 app.use(
   cors({
-    origin: "http://localhost:5174",
+    origin: process.env.CLIENT_URL || "http://localhost:5174",
     credentials: true,
   })
 );
